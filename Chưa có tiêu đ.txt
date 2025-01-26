@@ -1,0 +1,86 @@
+-- Load Thư viện giao diện người dùng 
+Vape local Vape = Loadstring(game:HttpGet("https://raw.githubusercontent.com/danielga3/Vape-UI/main/Vape%20UI.lua"))() 
+
+-- Khởi tạo UI chính 
+local Window = Vape.CreateWindow("Grayx", "GRAYX") 
+
+-- Tạo Tab "Farming" cho các tính năng chuyển đổi 
+local FarmingTab = Window:AddTab("Farming") 
+local FarmingSection = FarmingTab:AddSection("Auto Farming") 
+
+-- Tạo Tab "Settings" cho cài đặt khác 
+local settingsTab = Window:AddTab("Settings") 
+local SettingSection = SettingTab:AddSection("Customization & Save") 
+
+-- Lưu trữ trạng thái các cài đặt 
+cục bộ settings = { 
+    AutoMobs = false, 
+    AutoBossQuests = false, 
+    SemiKillAura = false, 
+    AutoDungeon = false, 
+    Theme = "DarkTheme" 
+} 
+
+-- Hàm lưu cài đặt vào file JSON 
+local chức năng SaveSettings() 
+    cục bộ HttpService = game:GetService("HttpService") 
+    writefile("hub.json", HttpService:JSONEncode(Settings)) 
+end 
+
+-- Hàm tải cài đặt từ file JSON 
+local function LoadSettings() 
+    local HttpService = game:GetService("HttpService" ) 
+    if isfile("hub.json") then 
+        local contents = readfile("hub.json") 
+        Settings = HttpService:JSONDecode(contents) 
+    end 
+end 
+
+-- Gọi hàm tải cài đặt khi khởi động 
+LoadSettings() 
+
+-- Các Toggle trong Tab "Nông nghiệp" 
+FarmingSection:AddToggle("Mobs tự động", { 
+    Mặc định = Settings.AutoMobs, 
+    Văn bản = "Mobs tự động", 
+    Gọi lại = hàm(trạng thái) 
+        Settings.AutoMobs = trạng thái 
+        SaveSettings() 
+
+        -- Tạo Mobs tự động có chức năng 
+        spawn( function() 
+            while Settings.AutoMobs thực hiện 
+                pcall(function() 
+                    -- Kiểm tra xem AutoMobs đã được bật 
+                    local Nig = Player.PlayerGui:FindFirstChild("Main"):FindFirstChild("ingame"):FindFirstChild("Missionstory") 
+
+                    -- Kiểm tra điều kiện nếu Missionstory không hiển thị 
+                    if not Nig.Visible then 
+                        -- Duyệt qua các mission givers 
+                        for i, v in next, Workspace.missiongivers:GetChildren() do 
+                            if v:FindFirstChild("Head") and v .Head:FindFirstChild("givemission") và v.Head.givemission.Enabled và v.Head.givemission:FindFirstChild("color").Image == "http://www.roblox.com/asset/?id=5459241648" then
+                                -- Di chuyển đến mission giver và nhận nhiệm vụ
+                                Teleport(CFrame.new(v.HumanoidRootPart.Position) * CFrame.new(0, -7, 3)) 
+                                v:FindFirstChild( 
+                                "CLIENTTALK"):FireServer() v:FindFirstChild("CLIENTTALK"):FireServer("accept") 
+                                break 
+                            end 
+                        end 
+                    end 
+
+                    -- Nếu Missionstory hiển thị 
+                    if Nig.Visible thì 
+                        -- Duyệt qua NPCs và thực hiện hành động 
+                        for i, v in next, npc:GetChildren() do 
+                            if v:IsA("Model") và v:FindFirstChild("npctype") và string.find(Nig.bg.name.Text, v.Head.mob.fram.name.info.Text) và v:FindFirstChild("HumanoidRootPart") và v:FindFirstChild("Humanoid") và v.Head.CFrame.Y > -1000 thì 
+                                -- Di chuyển tới NPC và tấn công 
+                                Teleport(CFrame.new(v.HumanoidRootPart.Position + Vector3.new(0, 0, 3))) 
+                                Player.Character.combat.update:FireServer("mouse1", true) 
+                                Player.Character.combat.update:FireServer("mouse1", false) 
+
+                                -- Loại bỏ exploit và hạ gục NPC 
+                                local Anti = v:FindFirstChild("antiexploit", true) 
+                                if Anti then 
+                                    Anti:Destroy() 
+                                end 
+                                local Humanoid
